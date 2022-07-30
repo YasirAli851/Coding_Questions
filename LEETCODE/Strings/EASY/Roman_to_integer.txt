@@ -194,7 +194,7 @@ void solve()
     while(i<=s.size()-1)
     {
         //Below is the main part of this problem.
-        //that means if the current roman value is lesser then its next roman value.
+        //that means if the current roman value is lesser than its next roman value.
         //then we will add the difference between greatest roman number and
         //smallest roman number.so,as we have added the differences of two continuous
         //roman characters,we will increase our index by 2 as we have already managed 
@@ -206,7 +206,7 @@ void solve()
             i+=2;
         }
         //Below is the part where we are just adding the roman value to the result
-        //and increasing the index by one as we are only dealing with only one
+        //and increasing the index by 1 as we are only dealing with only one
         //character because we have not found our next roman value to be greater than
         //our current roman value.
         else
