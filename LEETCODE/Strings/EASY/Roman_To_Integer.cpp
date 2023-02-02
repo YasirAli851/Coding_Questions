@@ -1,0 +1,239 @@
+Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
+
+Symbol       Value
+I             1
+V             5
+X             10
+L             50
+C             100
+D             500
+M             1000
+For example, 2 is written as II in Roman numeral, just two ones added together. 12 is written as XII, which is simply X + II. The number 27 is written as XXVII, which is XX + V + II.
+
+Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not IIII. Instead, the number four is written as IV. Because the one is before the five we subtract it making four. The same principle applies to the number nine, which is written as IX. There are six instances where subtraction is used:
+
+I can be placed before V (5) and X (10) to make 4 and 9. 
+X can be placed before L (50) and C (100) to make 40 and 90. 
+C can be placed before D (500) and M (1000) to make 400 and 900.
+Given a roman numeral, convert it to an integer.
+
+ 
+
+Example 1:
+
+Input: s = "III"
+Output: 3
+Explanation: III = 3.
+Example 2:
+
+Input: s = "LVIII"
+Output: 58
+Explanation: L = 50, V= 5, III = 3.
+Example 3:
+
+Input: s = "MCMXCIV"
+Output: 1994
+Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
+ 
+
+Constraints:
+
+1 <= s.length <= 15
+s contains only the characters ('I', 'V', 'X', 'L', 'C', 'D', 'M').
+It is guaranteed that s is a valid roman numeral in the range [1, 3999].
+
+
+
+Link to question:-https://leetcode.com/problems/roman-to-integer/
+
+My code:-
+
+class Solution {
+public:
+    int romanToInt(string s) {
+    map<char,int>m;
+    m.insert(make_pair('I',1));
+    m.insert(make_pair('V',5));
+    m.insert(make_pair('X',10));
+    m.insert(make_pair('L',50));
+    m.insert(make_pair('C',100));
+    m.insert(make_pair('D',500));
+    m.insert(make_pair('M',1000));
+    int result=0;
+    int i=0;
+    while(i<=s.size()-1)
+    {
+        if(m[s[i]]<m[s[i+1]])
+        {
+            result+=(m[s[i+1]]-m[s[i]]);
+            i+=2;
+        }
+        else
+        {
+            result+=m[s[i]];
+            i++;
+        }
+
+    }
+    return result;
+
+    }
+};
+
+
+
+MY code with explanation(Please refer void solve function)
+
+/*Yasir Ali*/
+#include<bits/stdc++.h>
+using namespace std;
+#define nl "\n"
+#define ll long long
+#define sz length()
+#define PI 3.1415926535897932384626433832795
+#define MOD 1000000007
+#define FOR(i,a,b) for(ll i=a;i<=b;i++)
+const ll INF=1e9+7;
+bool isPrime(ll x)
+{
+   bool check=true;
+   for(ll i=2;i<x;i++)
+   {
+      if(x%i==0)
+      {
+         check=false;
+         break;
+      }
+   }
+   if(check && x!=1)
+   {
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+}
+
+//To take space separated string
+ // while (true)
+ //    {
+ //      cin>>z;
+ //      s+=z;
+ //      if(cin.peek()=='\n')
+ //      break;
+ //    }
+
+ll gcd(ll x,ll y)
+{
+   int final=-1;
+   for(int i=2;i<x || i<y;i++)
+   {
+      if(x%i==0 && y%i==0)
+      {
+         final=i;
+      }
+   }
+   return final;
+}
+void removeSpaces(string &str)
+{
+    int n = str.length();
+    int i = 0, j = -1;
+    bool spaceFound = false;
+    while (++j < n && str[j] == ' ');
+    while (j < n)
+    {
+        if (str[j] != ' ')
+        {
+            
+            if ((str[j] == '.' || str[j] == ',' ||
+                 str[j] == '?') && i - 1 >= 0 &&
+                 str[i - 1] == ' ')
+                str[i - 1] = str[j++];
+ 
+            else
+               
+                str[i++] = str[j++];
+ 
+           
+            spaceFound = false;
+        }
+        else if (str[j++] == ' ')
+        {
+            
+            if (!spaceFound)
+            {
+                str[i++] = ' ';
+                spaceFound = true;
+            }
+        }
+    }
+    if (i <= 1)
+        str.erase(str.begin() + i, str.end());
+    else
+        str.erase(str.begin() + i - 1, str.end());
+}
+void solve() 
+{
+    string s;
+    cin>>s;
+    map<char,int>m; //Creating a map of the pair of character and integer.
+
+    //Below is the value of each character corresponding to thier roman values
+    //in terms of pair. 
+    m.insert(make_pair('I',1));
+    m.insert(make_pair('V',5));
+    m.insert(make_pair('X',10));
+    m.insert(make_pair('L',50));
+    m.insert(make_pair('C',100));
+    m.insert(make_pair('D',500));
+    m.insert(make_pair('M',1000));
+    int result=0;
+    int i=0;
+    while(i<=s.size()-1)
+    {
+        //Below is the main part of this problem.
+        //that means if the current roman value is lesser than its next roman value.
+        //then we will add the difference between greatest roman number and
+        //smallest roman number.so,as we have added the differences of two continuous
+        //roman characters,we will increase our index by 2 as we have already managed 
+        //to deal with 2 characters.
+        if(m[s[i]]<m[s[i+1]]) //m[s[i]] will give the value of the current roman character.
+        //m[s[i+1]] will give the value of next roman character.
+        {
+            result+=(m[s[i+1]]-m[s[i]]);
+            i+=2;
+        }
+        //Below is the part where we are just adding the roman value to the result
+        //and increasing the index by 1 as we are only dealing with only one
+        //character because we have not found our next roman value to be greater than
+        //our current roman value.
+        else
+        {
+            result+=m[s[i]];
+            i++;
+        }
+
+    }
+    cout<<result; //Finally printing the result
+
+}  
+int main()
+{
+  int tt;
+  cin>>tt;
+   
+  while(tt--)
+  {
+      solve();
+  }
+   clock_t start, end;
+    start = clock();
+    end = clock();
+    double time_taken= double(end - start)/ double(CLOCKS_PER_SEC);
+    cerr << "Execution time: " << time_taken<< " secs";
+ 
+    return 0;
+
+}
